@@ -7,7 +7,7 @@ def getCountours(mask):
   denoised = cv.erode(mask, denoiseSize, iterations = 1)
   denoised = cv.dilate(denoised, denoiseSize, iterations = 1)
   denoised = cv.erode(denoised, np.ones((5, 5), np.uint8), iterations = 1)
-  denoised = cv.morphologyEx(denoised, cv.MORPH_OPEN, np.ones((10, 10), np.uint8))
+  # denoised = cv.morphologyEx(denoised, cv.MORPH_OPEN, np.ones((10, 10), np.uint8))
   contours, heirachy = cv.findContours(denoised, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
   return (denoised, contours, heirachy)
 
