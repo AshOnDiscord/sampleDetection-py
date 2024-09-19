@@ -30,35 +30,9 @@ for (i, c) in enumerate(contours):
     v = np.intp(cv.boxPoints(rect))
     for j in range(4):
         cv.line(contoursImg, tuple(v[j]), tuple(v[(j+1)%4]), (255, 255, 0), 2)
-denoisedColored = cv.bitwise_and(img, img, mask = denoised)
-canny_output = cv.Canny(denoisedColored, 50, 100,apertureSize=3)
-canny_denoised = cv.morphologyEx(canny_output, cv.MORPH_CLOSE, np.ones((5, 5), np.uint8))
-kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE,(9,9))
-# canny_denoised = cv.erode(cv.dilate(canny_output, kernel, iterations = 1), kernel, iterations = 1)
-contoursC, heirachyC = cv.findContours(canny_denoised, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
-contoursCImg = cv.drawContours(img.copy(), contoursC, -1, (255, 255, 0), 2)
-# also draw bounding
-for (i, c) in enumerate(contoursC):
-    if heirachyC[0, i, 3] != -1:
-        continue
-    x, y, w, h = cv.boundingRect(c)
-    if w < 20 or h < 20:
-        continue
-    rect = cv.minAreaRect(c)
-    v = np.intp(cv.boxPoints(rect))
-    for j in range(4):
-        cv.line(contoursCImg, tuple(v[j]), tuple(v[(j+1)%4]), (0, 255, 0), 2)
-
-# cv.imshow("Original", img)
-# cv.imshow("ycrcb", ycrcb)
-# cv.imshow("cbChannel", cbChannel)
-# cv.imshow("range", ranged)
-# cv.imshow("masked", masked)
-# cv.imshow("Thresholded", thres)
+        
 cv.imshow("Denoised", denoised)
-# cv.imshow("Canny", canny_denoised)
 cv.imshow("Contours", contoursImg)
-cv.imshow("ContoursC", contoursCImg)
 
 while True:
     if cv.waitKey(1) & 0xFF == ord('q'):
